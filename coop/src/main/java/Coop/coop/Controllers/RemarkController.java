@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http:localhost:3000")
 @RestController
-@RequestMapping("/api/Song/{id}")
+@RequestMapping("/api/Remarks")
 public class RemarkController {
     final RemarkService remarkService;
 
@@ -19,22 +19,22 @@ public class RemarkController {
         this.remarkService = remarkService;
     }
 
-    @PostMapping("/post/Remark")
+    @PostMapping("/post")
     public Remark addRemark(@RequestBody Remark remark){
         return remarkService.addRemark(remark);
     }
 
-    @PutMapping("/put/Remark/{id}")
+    @PutMapping("/put/{id}")
     public Boolean updateRemark(@RequestBody Remark remark){
         return remarkService.updateRemark(remark);
     }
 
-    @GetMapping("/get/Remark/{id}")
+    @GetMapping("/get/{id}")
     public List<Remark> getRemarks(@PathVariable long id){
         return remarkService.getRemarksForSong(id);
     }
 
-    @DeleteMapping("/delete/Remark/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteRemark(@PathVariable long id){
         remarkService.deleteRemark(id);
     }

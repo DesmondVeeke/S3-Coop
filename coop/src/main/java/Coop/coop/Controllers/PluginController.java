@@ -9,7 +9,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http:localhost:3000")
 @RestController
-@RequestMapping("/api/Song/{id}")
+@RequestMapping("/api/Plugins")
 public class PluginController {
 
     final PluginService pluginService;
@@ -19,22 +19,22 @@ public class PluginController {
         this.pluginService = pluginService;
     }
 
-    @PostMapping("/post/Plugin")
+    @PostMapping("/post")
     public Plugin addPlugin(@RequestBody Plugin plugin){
         return pluginService.addPlugin(plugin);
     }
 
-    @PutMapping("/put/Plugin/{id}")
+    @PutMapping("/put/{id}")
     public Boolean updatePlugin(@RequestBody Plugin plugin){
         return pluginService.updatePlugin(plugin);
     }
 
-    @GetMapping("/get/Plugin/{id}")
+    @GetMapping("/get/{id}")
     public List<Plugin> getPlugins(@PathVariable long id){
         return pluginService.getPluginsForSong(id);
     }
 
-    @DeleteMapping("/delete/Plugin/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deletePlugin(@PathVariable long id){
         pluginService.deletePlugin(id);
     }
