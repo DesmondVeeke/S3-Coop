@@ -29,7 +29,13 @@ public class SongController
     @PutMapping("/put/{id}")
     public Boolean updateSong(@RequestBody Song song)
     {
-        return songService.updateSong(song);
+        try{
+            return songService.updateSong(song);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @GetMapping("/get/{id}")

@@ -1,12 +1,14 @@
 package Coop.coop.Entities;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Tag("Unit tests - Entities")
 class PluginTest {
 
     Plugin testPlugin = new Plugin();
@@ -39,5 +41,10 @@ class PluginTest {
         testPlugin.setId(1L);
         assertEquals(1L, testPlugin.getId());
 
+    }
+
+    @Test void getSongID(){
+        testPlugin.setSongId(2L);
+        assertEquals(2L,testPlugin.getSongId());
     }
 }

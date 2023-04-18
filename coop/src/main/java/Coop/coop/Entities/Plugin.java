@@ -19,6 +19,16 @@ public class Plugin {
     private Long id;
     private String name;
     private String version;
+    private long songId;
+
+
+    public long getSongId() {
+        return songId;
+    }
+
+    public void setSongId(long songId) {
+        this.songId = songId;
+    }
 
     public String getName() {
         return name;

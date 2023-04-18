@@ -23,10 +23,19 @@ public class Remark {
 
     @Id
     private Long id;
-
     private Long songID;
     private int stemNumber;
+    private String body;
     private double timeInTrack;
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
 
     public int getStemNumber() {
         return stemNumber;

@@ -1,12 +1,16 @@
 package Coop.coop.Entities;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Tag("Unit tests - Entities")
 class RemarkTest {
 
     Remark testRemark = new Remark();
@@ -43,5 +47,11 @@ class RemarkTest {
     void getId() {
         testRemark.setId(1L);
         assertEquals(1,testRemark.getId());
+    }
+
+    @Test
+    void getBody(){
+        testRemark.setBody("This is the body");
+        assertEquals("This is the body", testRemark.getBody());
     }
 }

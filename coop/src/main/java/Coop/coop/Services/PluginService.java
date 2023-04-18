@@ -2,6 +2,7 @@ package Coop.coop.Services;
 
 import Coop.coop.Entities.Plugin;
 import Coop.coop.Interfaces.PluginRepository;
+import Coop.coop.Interfaces.PluginRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,10 @@ import java.util.Optional;
 
 @Service
 public class PluginService {
-    private final PluginRepository pluginRepository;
+    private final PluginRepositoryCustom pluginRepository;
 
     @Autowired
-    public PluginService(PluginRepository pluginRepository){
+    public PluginService(PluginRepositoryCustom pluginRepository){
         this.pluginRepository = pluginRepository;
     }
 
@@ -43,11 +44,23 @@ public class PluginService {
         return true;
     }
 
-    public void deletePlugin(long pluginID){
-        pluginRepository.deleteById(pluginID);
+    public Boolean deletePlugin(long pluginID){
+        if(pluginRepository.getById(pluginID) != null){
+            pluginRepository.deleteById(pluginID);
+            return true;
+        }
+        return false;
     }
 
     public List<Plugin> getPluginsForSong(long songID){
-        return pluginRepository.findAll(Sort.by(Sort.Direction.ASC, "songID"));
+        return pluginRepository.findAllBySongId(songID);
+    }
+
+    public Plugin GetPlugin(long pluginID){
+        return pluginRepository.getById(pluginID);
+    }
+
+    public Optional<Plugin> getPlugin(long pluginID) {
+        return pluginRepository.findById(pluginID);
     }
 }

@@ -14,14 +14,22 @@ public class SongService {
     public SongService(SongRepository songRepository) {
         this.songRepository = songRepository;
     }
-    public Song addSong(Song song){
-        return songRepository.save((song));
+    public Song addSong(Song song)
+    {
+        if(song.getTrackName().isEmpty()){
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        return songRepository.save(song);
     }
 
     public Boolean updateSong(Song song){
 
     Song oldSong = new Song();
     Optional<Song> optionalSong = songRepository.findById(song.getId());
+
+        if(song.getTrackName().isEmpty()){
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
 
         if(optionalSong.isPresent()){
             oldSong = optionalSong.get();
@@ -44,9 +52,12 @@ public class SongService {
         return true;
     }
 
-    public void deleteSong(long songID){
-
-        songRepository.deleteById(songID);
+    public boolean deleteSong(long songID){
+        if(songRepository.getById(songID) != null){
+            songRepository.deleteById(songID);
+            return true;
+        }
+        return false;
     }
 
     public Optional<Song> getSong(long songID){
