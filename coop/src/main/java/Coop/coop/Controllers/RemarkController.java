@@ -4,13 +4,16 @@ package Coop.coop.Controllers;
 import Coop.coop.Entities.Remark;
 import Coop.coop.Services.RemarkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http:localhost:3000")
 @RestController
-@RequestMapping("/api/Remarks")
+@RequestMapping("/api/remarks")
 public class RemarkController {
     final RemarkService remarkService;
 
@@ -19,23 +22,57 @@ public class RemarkController {
         this.remarkService = remarkService;
     }
 
-    @PostMapping("/post")
-    public Remark addRemark(@RequestBody Remark remark){
-        return remarkService.addRemark(remark);
+    @PostMapping()
+    public ResponseEntity<String> addRemark(@RequestBody Remark remark)
+    {
+        try
+        {
+            this.remarkService.addRemark(remark);
+            return new ResponseEntity<>("Remark is saved at: " + remark.getTimeInTrack() + " seconds.", HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PutMapping("/put/{id}")
-    public Boolean updateRemark(@RequestBody Remark remark){
-        return remarkService.updateRemark(remark);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateRemark(@RequestBody Remark remark)
+    {
+        try
+        {
+            remarkService.updateRemark(remark);
+            return new ResponseEntity<>("The remark was succesfully updated.", HttpStatus.OK);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/get/{id}")
-    public List<Remark> getRemarks(@PathVariable long id){
+    @GetMapping("/forsong/{id}")
+    public List<Remark> getRemarksForSong(@PathVariable long id)
+    {
         return remarkService.getRemarksForSong(id);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteRemark(@PathVariable long id){
-        remarkService.deleteRemark(id);
+    @GetMapping("/{id}")
+    public Optional<Remark> getRemark(@PathVariable long id)
+    {
+        return remarkService.getRemark(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteRemark(@PathVariable long id)
+    {
+        try
+        {
+            remarkService.deleteRemark(id);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

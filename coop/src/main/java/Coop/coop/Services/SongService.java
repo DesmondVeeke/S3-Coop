@@ -5,6 +5,7 @@ import Coop.coop.Interfaces.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.NoSuchFileException;
 import java.util.Optional;
 
 @Service
@@ -22,32 +23,33 @@ public class SongService {
         return songRepository.save(song);
     }
 
-    public Boolean updateSong(Song song){
+    public Boolean updateSong(Song song) throws NoSuchFileException {
 
-    Song oldSong = new Song();
-    Optional<Song> optionalSong = songRepository.findById(song.getId());
 
         if(song.getTrackName().isEmpty()){
-            throw new IllegalArgumentException("Name cannot be empty");
+            throw new IllegalArgumentException("Name of the track cannot be empty");
         }
 
+        Optional<Song> optionalSong = songRepository.findById(song.getId());
+
+
         if(optionalSong.isPresent()){
-            oldSong = optionalSong.get();
+            var oldSong = optionalSong.get();
 
             oldSong.setId(optionalSong.get().getId());
-            oldSong.setLastModifiedBy(optionalSong.get().getLastModifiedBy());
-            oldSong.setAuthor(optionalSong.get().getAuthor());
-            oldSong.setLength(optionalSong.get().getLength());
-            oldSong.setStatus(optionalSong.get().getStatus());
-            oldSong.setTrackName(optionalSong.get().getTrackName());
-            oldSong.setRemarks(optionalSong.get().getRemarks());
-            oldSong.setPlugins(optionalSong.get().getPlugins());
-            oldSong.setDateAdded(optionalSong.get().getDateAdded());
+            oldSong.setLastModifiedBy(song.getLastModifiedBy());
+            oldSong.setAuthor(song.getAuthor());
+            oldSong.setLength(song.getLength());
+            oldSong.setStatus(song.getStatus());
+            oldSong.setTrackName(song.getTrackName());
+            oldSong.setRemarks(song.getRemarks());
+            oldSong.setPlugins(song.getPlugins());
+            oldSong.setDateAdded(song.getDateAdded());
 
             songRepository.save(oldSong);
         }
         else{
-            return false;
+            throw new NoSuchFileException("This track could not be found.");
         }
         return true;
     }
@@ -60,8 +62,8 @@ public class SongService {
         return false;
     }
 
-    public Optional<Song> getSong(long songID){
-
+    public Optional<Song> getSong(long songID)
+    {
         return songRepository.findById(songID);
     }
 }

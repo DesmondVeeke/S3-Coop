@@ -29,6 +29,16 @@ public class Song {
     @OneToMany
     private List<Remark> remarks;
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    private String errorMessage;
+
 
     public void setTrackName(String trackName) {
         this.trackName = trackName;

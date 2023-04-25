@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.Executable;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +104,7 @@ class SongServiceTest {
     }
 
     @Test
-    void updateSong_Pass() {
+    void updateSong_Pass() throws NoSuchFileException {
         //Act
         testSong.setTrackName("Changed trackname!");
         service.updateSong(testSong);
@@ -117,7 +118,7 @@ class SongServiceTest {
     @Test
     void updateSong_EmptyName_Fail() {
         //Arrange
-        String expectedMessage = "Name cannot be empty";
+        String expectedMessage = "Name of the track cannot be empty";
 
         //Act
         testSong.setTrackName("");

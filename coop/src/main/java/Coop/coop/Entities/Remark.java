@@ -28,6 +28,17 @@ public class Remark {
     private String body;
     private double timeInTrack;
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    private String errorMessage;
+
+
     public String getBody() {
         return body;
     }

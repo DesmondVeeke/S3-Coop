@@ -1,7 +1,9 @@
 package Coop.coop;
 
+import Coop.coop.Entities.Plugin;
 import Coop.coop.Entities.Song;
 import Coop.coop.Entities.SongStatus;
+import Coop.coop.Interfaces.PluginRepository;
 import Coop.coop.Interfaces.SongRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +24,7 @@ public class CoopApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(SongRepository repository){
+	public CommandLineRunner addSongs(SongRepository songRepository){
 		return (args) -> {
 			Song song = new Song();
 			song.setTrackName("Track number 1");
@@ -32,8 +34,24 @@ public class CoopApplication {
 			song.setDateAdded(new Date(2023-05-05));
 			song.setLastModifiedBy("Desmond");
 			song.setDateModified(new Date(2023-05-05));
+			song.setId(1L);
 
-			repository.save(song);
+			songRepository.save(song);
+		};
+	}
+
+	@Bean
+	public CommandLineRunner addPlugin(PluginRepository pluginRepository){
+		return (args) -> {
+			Plugin plugin = new Plugin();
+
+			plugin.setAvailable(true);
+			plugin.setVersion("1.0");
+			plugin.setName("Omnisphere");
+			plugin.setSongId(1L);
+			plugin.setId(1L);
+
+			pluginRepository.save(plugin);
 		};
 	}
 }

@@ -21,6 +21,17 @@ public class Plugin {
     private String version;
     private long songId;
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    private String errorMessage;
+
+
 
     public long getSongId() {
         return songId;

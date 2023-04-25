@@ -25,16 +25,15 @@ public class PluginService {
 
     public Boolean updatePlugin(Plugin plugin){
 
-        Plugin oldPlugin = new Plugin();
         Optional<Plugin> optionalPlugin = pluginRepository.findById(plugin.getId());
 
         if(optionalPlugin.isPresent()){
-            oldPlugin = optionalPlugin.get();
+            var oldPlugin = optionalPlugin.get();
 
             oldPlugin.setId(optionalPlugin.get().getId());
-            oldPlugin.setName(optionalPlugin.get().getName());
-            oldPlugin.setAvailable(optionalPlugin.get().isAvailable());
-            oldPlugin.setVersion(optionalPlugin.get().getVersion());
+            oldPlugin.setName(plugin.getName());
+            oldPlugin.setAvailable(plugin.isAvailable());
+            oldPlugin.setVersion(plugin.getVersion());
 
             pluginRepository.save(oldPlugin);
         }
