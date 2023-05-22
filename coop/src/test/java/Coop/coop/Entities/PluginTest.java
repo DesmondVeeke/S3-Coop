@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Tag("Unit tests - Entities")
+@Tag("UnitTests")
 class PluginTest {
 
     Plugin testPlugin = new Plugin();

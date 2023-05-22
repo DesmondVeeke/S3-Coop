@@ -10,7 +10,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Tag("Unit tests - Entities")
+@Tag("UnitTests")
 class RemarkTest {
 
     Remark testRemark = new Remark();

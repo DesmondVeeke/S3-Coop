@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Tag("Unit tests - Entities")
+@Tag("UnitTests")
 class SongTest {
 
     Song songTest = new Song();

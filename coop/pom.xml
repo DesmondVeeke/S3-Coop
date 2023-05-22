@@ -58,5 +58,8 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>
+			coop
+		</finalName>
 	</build>
 </project>

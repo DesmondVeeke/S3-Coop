@@ -4,6 +4,7 @@ import Coop.coop.Entities.Song;
 import Coop.coop.Entities.SongStatus;
 import Coop.coop.Interfaces.SongRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@Tag("IntegrationTests")
 public class SongRestControllerTest {
     @Autowired
     private MockMvc mvc;

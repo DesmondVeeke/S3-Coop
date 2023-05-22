@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Tag("Unit tests - Services")
+@Tag("UnitTests")
 class RemarkServiceTest {
 
     private RemarkService service;
