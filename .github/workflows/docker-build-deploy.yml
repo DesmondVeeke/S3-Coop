@@ -27,7 +27,7 @@ jobs:
         with:
           context: ./coop
           push: true
-          tags: coop/coop:latest
+          tags: desmondveeke/coop:latestversion
 
       - name: Logout from Docker registry
         run: docker logout https://hub.docker.com/
