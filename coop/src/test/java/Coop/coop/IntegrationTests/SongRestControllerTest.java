@@ -59,14 +59,14 @@ public class SongRestControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
-        Song optionalResult = songRepository.findById(2L).orElse(null);
+        Song optionalResult = songRepository.findById(5L).orElse(null);
 
         Long resultID = optionalResult.getId();
         String trackName = optionalResult.getTrackName();
         String authorName = optionalResult.getAuthor();
 
         //Assert
-        assertEquals(2L, resultID);
+        assertEquals(5L, resultID);
         assertEquals(testSong.getAuthor(), authorName);
         assertEquals(testSong.getTrackName(), trackName);
 
@@ -83,7 +83,7 @@ public class SongRestControllerTest {
         testSong.setDateAdded(new Date(2023-05-05));
         testSong.setLastModifiedBy("Desmond");
         testSong.setDateModified(new Date(2023-05-05));
-        testSong.setId(1L);
+        testSong.setId(3L);
 
         mvc.perform(MockMvcRequestBuilders
                 .put("/api/songs/{id}", 1L)
@@ -92,7 +92,7 @@ public class SongRestControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        Song optionalResult = songRepository.findById(1L).orElse(null);
+        Song optionalResult = songRepository.findById(3L).orElse(null);
 
         String trackName = optionalResult.getTrackName();
 
@@ -103,7 +103,7 @@ public class SongRestControllerTest {
 
     @Test
     public void DeleteSongAPI() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.delete("/api/songs/{id}", 1L))
+        mvc.perform(MockMvcRequestBuilders.delete("/api/songs/{id}", 4L))
                 .andExpect(status().isAccepted());
     }
 

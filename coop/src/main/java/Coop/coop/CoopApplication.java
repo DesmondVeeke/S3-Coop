@@ -37,6 +37,42 @@ public class CoopApplication {
 			song.setId(1L);
 
 			songRepository.save(song);
+
+			song = new Song();
+			song.setTrackName("Track number 2");
+			song.setAuthor("Brian");
+			song.setLength(300);
+			song.setStatus(SongStatus.Mix);
+			song.setDateAdded(new Date(2023-05-05));
+			song.setLastModifiedBy("Brian");
+			song.setDateModified(new Date(2023-05-05));
+			song.setId(2L);
+
+			songRepository.save(song);
+
+			song = new Song();
+			song.setTrackName("Track number 3");
+			song.setAuthor("Big Dog");
+			song.setLength(150);
+			song.setStatus(SongStatus.Production);
+			song.setDateAdded(new Date(2023-05-05));
+			song.setLastModifiedBy("Big dog");
+			song.setDateModified(new Date(2023-05-05));
+			song.setId(3L);
+
+			songRepository.save(song);
+
+			song = new Song();
+			song.setTrackName("Desmond is echt artistiek zeg");
+			song.setAuthor("Desmond");
+			song.setLength(1500);
+			song.setStatus(SongStatus.Mastering);
+			song.setDateAdded(new Date(2023-05-05));
+			song.setLastModifiedBy("Big Bri");
+			song.setDateModified(new Date(2023-05-05));
+			song.setId(4L);
+
+			songRepository.save(song);
 		};
 	}
 
@@ -50,6 +86,36 @@ public class CoopApplication {
 			plugin.setName("Omnisphere");
 			plugin.setSongId(1L);
 			plugin.setId(1L);
+
+			pluginRepository.save(plugin);
+
+			plugin = new Plugin();
+
+			plugin.setAvailable(true);
+			plugin.setVersion("5.3");
+			plugin.setName("Soundtoys");
+			plugin.setSongId(2L);
+			plugin.setId(2L);
+
+			pluginRepository.save(plugin);
+
+			plugin = new Plugin();
+
+			plugin.setAvailable(true);
+			plugin.setVersion("X.X");
+			plugin.setName("Ozone");
+			plugin.setSongId(4L);
+			plugin.setId(3L);
+
+			pluginRepository.save(plugin);
+
+			plugin = new Plugin();
+
+			plugin.setAvailable(false);
+			plugin.setVersion("");
+			plugin.setName("Corrupt");
+			plugin.setSongId(1L);
+			plugin.setId(4L);
 
 			pluginRepository.save(plugin);
 		};

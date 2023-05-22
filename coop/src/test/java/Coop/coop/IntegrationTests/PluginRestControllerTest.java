@@ -44,10 +44,10 @@ public class PluginRestControllerTest {
         Plugin plugin = new Plugin();
 
         plugin.setAvailable(true);
-        plugin.setVersion("1.0");
-        plugin.setName("Omnisphere");
+        plugin.setVersion("A");
+        plugin.setName("Sausage Fattener");
         plugin.setSongId(1L);
-        plugin.setId(2L);
+        plugin.setId(5L);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/plugins")
                 .content(asJsonString(plugin))
@@ -55,13 +55,13 @@ public class PluginRestControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
-        Plugin optionalResult = pluginRepository.findById(2L).orElse(null);
+        Plugin optionalResult = pluginRepository.findById(5L).orElse(null);
 
         Long resultId = optionalResult.getId();
         String pluginName = optionalResult.getName();
         String version = optionalResult.getVersion();
 
-        assertEquals(2L, resultId);
+        assertEquals(5L, resultId);
         assertEquals(plugin.getName(), pluginName);
         assertEquals(plugin.getVersion(), version);
 
@@ -104,7 +104,7 @@ public class PluginRestControllerTest {
     @Test
     public void DeletePluginAPI() throws Exception{
         mvc.perform(MockMvcRequestBuilders
-                .delete("/api/plugins/{id}", 1L))
+                .delete("/api/plugins/{id}", 4L))
                 .andExpect(status().isAccepted());
     }
 

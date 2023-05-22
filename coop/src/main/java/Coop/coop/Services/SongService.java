@@ -3,9 +3,12 @@ package Coop.coop.Services;
 import Coop.coop.Entities.Song;
 import Coop.coop.Interfaces.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.NoSuchFileException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,13 +18,15 @@ public class SongService {
     public SongService(SongRepository songRepository) {
         this.songRepository = songRepository;
     }
-    public Song addSong(Song song)
+    public ResponseEntity<Song> addSong(Song song)
     {
-        if(song.getTrackName().isEmpty()){
+        if (song.getTrackName().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
-        return songRepository.save(song);
+        Song savedSong = songRepository.save(song);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);
     }
+
 
     public Boolean updateSong(Song song) throws NoSuchFileException {
 
@@ -62,8 +67,20 @@ public class SongService {
         return false;
     }
 
-    public Optional<Song> getSong(long songID)
+    public ResponseEntity<Song> getSong(long songID)
     {
-        return songRepository.findById(songID);
+        Optional<Song> song = songRepository.findById(songID);
+        if (song.isPresent()) {
+            return ResponseEntity.ok(song.get()); // return 200 OK with the song if found
+        }
+        return ResponseEntity.notFound().build(); // return 404 Not Found if song not found
+    }
+
+    public ResponseEntity<List<Song>> getAllSongs() {
+        var songs = songRepository.findAll();
+        if (songs.isEmpty()) {
+            return ResponseEntity.noContent().build(); // return 204 No Content if no songs found
+        }
+        return ResponseEntity.ok(songs); // return 200 OK with the list of songs
     }
 }

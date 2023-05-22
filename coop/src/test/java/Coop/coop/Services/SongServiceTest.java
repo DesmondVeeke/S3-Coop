@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Executable;
 import java.nio.file.NoSuchFileException;
@@ -109,10 +111,9 @@ class SongServiceTest {
         testSong.setTrackName("Changed trackname!");
         service.updateSong(testSong);
 
-        Optional<Song> option = service.getSong(1L);
-        Song result = option.get();
+        ResponseEntity<Song> response = service.getSong(1L);
 
-        assertEquals("Changed trackname!", result.getTrackName());
+        assertEquals("Changed trackname!", response.getBody().getTrackName() );
     }
 
     @Test
@@ -154,18 +155,19 @@ class SongServiceTest {
     void getSong_Pass() {
         //Act
         var result = service.getSong(1L);
-        Song songResult = result.get();
 
         //Assert
-        assertEquals(testSong, songResult);
+        assertEquals(1L, result.getBody().getId());
+        assertEquals("Track number 1", result.getBody().getTrackName());
+        assertEquals("Desmond", result.getBody().getAuthor());
     }
 
     @Test
     void getSong_SongDoesntExist_Fail(){
         //Act
-        var result = service.getSong(2L);
+        var result = service.getSong(-1L);
 
         //Assert
-        assertEquals(Optional.empty(), result);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 }

@@ -2,11 +2,13 @@ package Coop.coop.Controllers;
 
 import Coop.coop.Entities.Song;
 import Coop.coop.Services.SongService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http:localhost:3000")
@@ -50,9 +52,16 @@ public class SongController
     }
 
     @GetMapping("/{id}")
-    public Optional<Song> getSong(@PathVariable long id)
+    public ResponseEntity<Song> getSong(@PathVariable long id)
     {
-        return songService.getSong(id);
+        try
+        {
+            return songService.getSong(id);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
@@ -69,5 +78,11 @@ public class SongController
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<Song>> getAllSongs(){
+        var songs = songService.getAllSongs();
+        return null;
     }
 }
