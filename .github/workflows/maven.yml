@@ -27,4 +27,5 @@ jobs:
         working-directory: coop
         
       - name: Run tests with maven
-        run: mvn -B test 
+        run: mvn -B test
+        working-directory: coop
