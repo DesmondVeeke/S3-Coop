@@ -73,6 +73,8 @@ public class CoopApplication {
 			song.setId(4L);
 
 			songRepository.save(song);
+
+			String hi = "hi";
 		};
 	}
 
