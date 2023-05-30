@@ -23,10 +23,20 @@ public class Song {
     private Date dateAdded;
     private Date dateModified;
     private String lastModifiedBy;
-    @OneToMany
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "song",
+            orphanRemoval = true
+    )
+
     private List<Plugin> plugins;
     private SongStatus status = SongStatus.Production;
-    @OneToMany
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "song",
+            orphanRemoval = true
+    )
     private List<Remark> remarks;
 
     public String getErrorMessage() {

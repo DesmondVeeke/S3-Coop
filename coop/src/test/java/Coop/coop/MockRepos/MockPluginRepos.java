@@ -21,16 +21,24 @@ public class MockPluginRepos implements PluginRepository, PluginRepositoryCustom
     public void FillDatabase(List<Plugin> plugins) { this.pluginList = plugins;}
 
     @Override
-    public List<Plugin> findAllBySongId(Long songID) {
-        List<Plugin> plugins = new ArrayList<>();
-
-        for(int i = 0; i < pluginList.size(); i++){
-            if(songID == pluginList.get(i).getSongId()){
-                plugins.add(pluginList.get(i));
+    public Optional<List<Plugin>> findAllBySong_Id(long songid){
+        List<Plugin> filteredPlugins = new ArrayList<>();
+        for (Plugin plugin : pluginList) {
+            if (plugin.getSong().getId() == songid) {
+                filteredPlugins.add(plugin);
             }
         }
+        return Optional.of(filteredPlugins);
+    }
 
-        return plugins;
+    @Override
+    public Optional<Plugin> findPluginByName(String name) {
+        for(Plugin plugin : pluginList){
+            if(plugin.getName() == name){
+                return Optional.of(plugin);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -122,8 +130,11 @@ public class MockPluginRepos implements PluginRepository, PluginRepositoryCustom
     }
 
     @Override
-    public <S extends Plugin> S save(S entity) {
-        return null;
+    public <S extends Plugin> S save(S plugin) {
+        long newId = generateNewId();
+        plugin.setId(newId);
+        pluginList.add(plugin);
+        return plugin;
     }
 
     @Override
@@ -198,4 +209,10 @@ public class MockPluginRepos implements PluginRepository, PluginRepositoryCustom
     public Page<Plugin> findAll(Pageable pageable) {
         return null;
     }
+
+
+    private long generateNewId() {
+        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    }
+
 }

@@ -4,6 +4,7 @@ import Coop.coop.Entities.Plugin;
 import Coop.coop.Entities.Remark;
 import Coop.coop.Entities.Song;
 import Coop.coop.Entities.SongStatus;
+import Coop.coop.MockRepos.MockPluginRepos;
 import Coop.coop.MockRepos.MockSongRepos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -27,6 +28,8 @@ class SongServiceTest {
     private SongService service;
 
     private MockSongRepos repos;
+
+    private MockPluginRepos pluginRepos;
 
     private Song testSong = new Song();
     private List<Song> songList = new ArrayList<>();
@@ -52,7 +55,6 @@ class SongServiceTest {
         testPlugin.setAvailable(true);
         testPlugin.setName("SoundToys Tremolator");
         testPlugin.setVersion("2.0.1");
-        testPlugin.setSongId(2L);
 
         List<Plugin> plugins = new ArrayList<>();
         plugins.add(testPlugin);
@@ -61,7 +63,6 @@ class SongServiceTest {
 
         testRemark.setId(1L);
         testRemark.setTimeInTrack(65.40);
-        testRemark.setSongID(2L);
         testRemark.setAuthor("Henry");
         testRemark.setStemNumber(1);
         testRemark.setDateAdded(new Date(2023-05-05));
@@ -145,7 +146,7 @@ class SongServiceTest {
     @Test
     void deleteSong_SongDoesntExist_Fail() {
         //Act
-        boolean result = service.deleteSong(999L);
+        boolean result = service.deleteSong(-999L);
 
         //Assert
         assertEquals(false,result);

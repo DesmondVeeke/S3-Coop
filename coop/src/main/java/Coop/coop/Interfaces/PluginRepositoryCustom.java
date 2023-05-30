@@ -4,8 +4,11 @@ import Coop.coop.Entities.Plugin;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PluginRepositoryCustom extends PluginRepository {
-    public List<Plugin> findAllBySongId(Long songID);
+    Optional<List<Plugin>> findAllBySong_Id(long songid);
+
+    Optional<Plugin> findPluginByName(String name);
 }

@@ -1,5 +1,7 @@
 package Coop.coop.Services;
 
+import Coop.coop.DTO.PluginDTO;
+import Coop.coop.Entities.Song;
 import Coop.coop.MockRepos.MockPluginRepos;
 import Coop.coop.Entities.Plugin;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +21,7 @@ class PluginServiceTest {
 
     private PluginService service;
     private MockPluginRepos repos;
+    private Song testSong = new Song();
     private Plugin testPlugin = new Plugin();
     private List<Plugin> pluginList = new ArrayList<>();
 
@@ -28,45 +31,55 @@ class PluginServiceTest {
         this.service = new PluginService(repos);
 
         //Arrange
-        testPlugin.setId(1L);
+        testSong.setTrackName("Plugin tests");
+        testSong.setId(1L);
+
+        testPlugin.setSong(testSong);
         testPlugin.setAvailable(true);
         testPlugin.setName("SoundToys Tremolator");
         testPlugin.setVersion("2.0.1");
-        testPlugin.setSongId(2L);
 
         pluginList.add(testPlugin);
         repos.FillDatabase(pluginList);
+        testPlugin = service.addPlugin(testPlugin);
 
     }
 
     @Test
     void addPlugin_Pass() {
         //Arrange
-        testPlugin.setId(5L);
+        testSong = new Song();
+        testSong.setId(1L);
+        testSong.setTrackName("addPlugin_Pass");
+
+        Plugin newPlugin = new Plugin();
+        newPlugin.setSong(testSong);
 
         //Act
-        service.addPlugin(testPlugin);
+        Plugin savedPlugin = service.addPlugin(testPlugin);
 
         //Assert
-        assertEquals(testPlugin, repos.getById(5L));
+        assertEquals(testPlugin.getName(), savedPlugin.getName());
 
     }
 
     @Test
     void updatePlugin_Pass() {
-        testPlugin.setAvailable(false);
-        service.updatePlugin(testPlugin);
+        PluginDTO dto = new PluginDTO();
 
-        Optional<Plugin> optional = service.getPlugin(1L);
-        Plugin result = optional.get();
+        dto.setName("updatePlugin_Pass");
+        dto.setPluginid(testPlugin.getId());
+        service.updatePlugin(dto);
 
-        assertFalse(result.isAvailable());
+        Plugin result = service.getPlugin(testPlugin.getId()).orElse(null);
+
+        assertEquals("updatePlugin_Pass", result.getName());
     }
 
     @Test
     void deletePlugin() {
         //Act
-        boolean result = service.deletePlugin(1L);
+        boolean result = service.deletePlugin(testPlugin.getId());
 
         //Assert
         assertTrue(result);
@@ -86,7 +99,7 @@ class PluginServiceTest {
     @Test
     void getPluginsForSong() {
         //Act
-        var result = service.getPluginsForSong(2L);
+        var result = service.getPluginsForSong(1L);
 
         //Assert
         assertEquals(pluginList, result);
@@ -104,7 +117,7 @@ class PluginServiceTest {
     @Test
     void getPlugin_Pass(){
         //Act
-        var result = service.getPlugin(1L);
+        var result = service.getPlugin(testPlugin.getId());
         Plugin pluginResult = result.get();
 
         //Assert
@@ -114,7 +127,7 @@ class PluginServiceTest {
     @Test
     void getPlugin_PluginDoesntExist_Fail(){
         //Act
-        var result = service.getPlugin(999L);
+        var result = service.getPlugin(-999L);
 
         //Assert
         assertEquals(Optional.empty(), result);

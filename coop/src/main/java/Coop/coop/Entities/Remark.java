@@ -1,7 +1,7 @@
 package Coop.coop.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,20 +13,24 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class Remark {
-    public Long getId() {
-        return id;
-    }
-
-    public Long getSongID() {
-        return songID;
-    }
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long songID;
     private int stemNumber;
     private String body;
     private double timeInTrack;
+    private String author;
+    private Date dateAdded;
+
+    @ManyToOne
+    @JoinColumn(name = "song_id")
+    @JsonIgnoreProperties("remarks")
+
+    private Song song;
+
+    public void setSong(Song song) {
+        this.song = song;
+    }
 
     public String getErrorMessage() {
         return errorMessage;
@@ -80,10 +84,12 @@ public class Remark {
         this.dateAdded = dateAdded;
     }
 
-    private String author;
-    private Date dateAdded;
+
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public Long getId() {
+        return id;
     }
 }

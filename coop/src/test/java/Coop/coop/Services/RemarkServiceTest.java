@@ -1,6 +1,7 @@
 package Coop.coop.Services;
 
 import Coop.coop.Entities.Remark;
+import Coop.coop.Entities.Song;
 import Coop.coop.MockRepos.MockRemarkRepos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -22,6 +23,7 @@ class RemarkServiceTest {
     private RemarkService service;
     private MockRemarkRepos repos;
     private Remark testRemark = new Remark();
+    private Song testSong = new Song();
     private List<Remark> remarkList = new ArrayList<>();
 
 
@@ -30,28 +32,37 @@ class RemarkServiceTest {
         this.repos = new MockRemarkRepos();
         this.service = new RemarkService(repos);
 
-        testRemark.setId(1L);
+        Song testSong = new Song();
+        testSong.setTrackName("Remark test song");
+
         testRemark.setTimeInTrack(65.40);
-        testRemark.setSongID(2L);
         testRemark.setAuthor("Henry");
         testRemark.setStemNumber(1);
         testRemark.setDateAdded(new Date(2023-05-05));
         testRemark.setBody("This is a remark's body");
+        testRemark.setSong(testSong);
 
         remarkList.add(testRemark);
         repos.FillDatabase(remarkList);
+        service.addRemark(testRemark);
     }
 
     @Test
     void addRemark_Pass() {
-        //Assert
-        testRemark.setId(2L);
+        //Arrange
+        testSong = new Song();
+        testSong.setId(1L);
+        testSong.setTrackName("addRemark_Pass");
+
+        Remark newRemark = new Remark();
+        newRemark.setSong(testSong);
+
 
         //Act
-        service.addRemark(testRemark);
+        Remark savedRemark = service.addRemark(testRemark);
 
         //Assert
-        assertEquals(testRemark, repos.getById(2L));
+        assertEquals(testRemark.getBody(), savedRemark.getBody());
     }
     @Test
     void addRemark_EmptyBody_Fail() {
@@ -77,7 +88,7 @@ class RemarkServiceTest {
         testRemark.setBody("This body has been changed!");
         service.updateRemark(testRemark);
 
-        Optional<Remark> optional = service.getRemark(1L);
+        Optional<Remark> optional = service.getRemark(testRemark.getId());
         Remark result = optional.get();
 
         assertEquals("This body has been changed!", result.getBody());
@@ -105,7 +116,7 @@ class RemarkServiceTest {
     @Test
     void deleteRemark_Pass() {
         //Act
-        boolean result = service.deleteRemark(1L);
+        boolean result = service.deleteRemark(testRemark.getId());
 
         //Assert
         assertTrue(result);
@@ -114,7 +125,7 @@ class RemarkServiceTest {
     @Test
     void deleteRemark_RemarkDoesntExist_Fail() {
         //Act
-        boolean result = service.deleteRemark(999L);
+        boolean result = service.deleteRemark(-999L);
 
         //Assert
         assertFalse(result);
@@ -124,7 +135,7 @@ class RemarkServiceTest {
     @Test
     void getRemarksForSong() {
         //Act
-        var result = service.getRemarksForSong(2L);
+        var result = service.getRemarksForSong(testRemark.getSong().getId());
 
         //Assert
         assertEquals(remarkList, result);
@@ -141,7 +152,7 @@ class RemarkServiceTest {
     @Test
     void getRemarks_Pass(){
         //Act
-        var result = service.getRemark(1L);
+        var result = service.getRemark(testRemark.getId());
         Remark remarkResult = result.get();
 
         //Assert

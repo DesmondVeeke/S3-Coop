@@ -1,9 +1,7 @@
 package Coop.coop.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,8 +17,14 @@ public class Plugin {
     private Long id;
     private String name;
     private String version;
-    private long songId;
+    @ManyToOne
+    @JoinColumn(name = "song_id")
+    @JsonIgnoreProperties("plugins")
+    private Song song;
 
+    public void setSong(Song song) {
+        this.song = song;
+    }
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -30,16 +34,6 @@ public class Plugin {
     }
 
     private String errorMessage;
-
-
-
-    public long getSongId() {
-        return songId;
-    }
-
-    public void setSongId(long songId) {
-        this.songId = songId;
-    }
 
     public String getName() {
         return name;

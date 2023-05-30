@@ -6,6 +6,8 @@ import Coop.coop.Interfaces.RemarkRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,12 +63,19 @@ public class RemarkService
         }
         return false;
     }
-    public List<Remark> getRemarksForSong(long songID){
-
-        return remarkRepository.findAllBySongID(songID);
+    public List<Remark> getRemarksForSong(long songID) {
+        Optional<List<Remark>> optionalRemarks = remarkRepository.findAllBySong_Id(songID);
+        return optionalRemarks.orElse(Collections.emptyList());
     }
 
-    public Optional<Remark> getRemark(long remarkID){
-        return remarkRepository.findById(remarkID);
+    public Optional<Remark> getRemark(long remarkID) {
+        Optional<Remark> optionalRemark = remarkRepository.findById(remarkID);
+
+        if (optionalRemark.isEmpty()) {
+            Remark empty = new Remark();
+            empty.setBody("No remarks were found");
+        }
+
+        return optionalRemark;
     }
 }

@@ -1,5 +1,6 @@
 package Coop.coop.Controllers;
 
+import Coop.coop.DTO.PluginDTO;
 import Coop.coop.Entities.Plugin;
 import Coop.coop.Services.PluginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,11 +40,11 @@ public class PluginController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updatePlugin(@RequestBody Plugin plugin)
+    public ResponseEntity<String> updatePlugin(@RequestBody PluginDTO pluginDTO)
     {
         try
         {
-            pluginService.updatePlugin(plugin);
+            pluginService.updatePlugin(pluginDTO);
             return new ResponseEntity<>("The plugin was succesfully updated.", HttpStatus.OK);
         }
         catch(Exception e)

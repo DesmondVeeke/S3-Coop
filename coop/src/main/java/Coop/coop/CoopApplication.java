@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
+import java.util.Optional;
 
 @SpringBootApplication
 public class CoopApplication {
@@ -24,7 +25,7 @@ public class CoopApplication {
 	}
 
 	@Bean
-	public CommandLineRunner addSongs(SongRepository songRepository){
+	public CommandLineRunner addSongs(SongRepository songRepository, PluginRepository pluginRepository){
 		return (args) -> {
 			Song song = new Song();
 			song.setTrackName("Track number 1");
@@ -74,20 +75,12 @@ public class CoopApplication {
 
 			songRepository.save(song);
 
-			String hi = "hi";
-		};
-	}
-
-	@Bean
-	public CommandLineRunner addPlugin(PluginRepository pluginRepository){
-		return (args) -> {
 			Plugin plugin = new Plugin();
 
 			plugin.setAvailable(true);
 			plugin.setVersion("1.0");
 			plugin.setName("Omnisphere");
-			plugin.setSongId(1L);
-			plugin.setId(1L);
+			plugin.setSong(song);
 
 			pluginRepository.save(plugin);
 
@@ -96,8 +89,7 @@ public class CoopApplication {
 			plugin.setAvailable(true);
 			plugin.setVersion("5.3");
 			plugin.setName("Soundtoys");
-			plugin.setSongId(2L);
-			plugin.setId(2L);
+			plugin.setSong(song);
 
 			pluginRepository.save(plugin);
 
@@ -106,8 +98,6 @@ public class CoopApplication {
 			plugin.setAvailable(true);
 			plugin.setVersion("X.X");
 			plugin.setName("Ozone");
-			plugin.setSongId(4L);
-			plugin.setId(3L);
 
 			pluginRepository.save(plugin);
 
@@ -116,12 +106,49 @@ public class CoopApplication {
 			plugin.setAvailable(false);
 			plugin.setVersion("");
 			plugin.setName("Corrupt");
-			plugin.setSongId(1L);
-			plugin.setId(4L);
 
 			pluginRepository.save(plugin);
 		};
 	}
+
+//	@Bean
+//	public CommandLineRunner addPlugin(PluginRepository pluginRepository){
+//		return (args) -> {
+//			Plugin plugin = new Plugin();
+//
+//			plugin.setAvailable(true);
+//			plugin.setVersion("1.0");
+//			plugin.setName("Omnisphere");
+//			plugin.setSong();
+//
+//			pluginRepository.save(plugin);
+//
+//			plugin = new Plugin();
+//
+//			plugin.setAvailable(true);
+//			plugin.setVersion("5.3");
+//			plugin.setName("Soundtoys");
+//			plugin.setId(2L);
+//
+//			pluginRepository.save(plugin);
+//
+//			plugin = new Plugin();
+//
+//			plugin.setAvailable(true);
+//			plugin.setVersion("X.X");
+//			plugin.setName("Ozone");
+//
+//			pluginRepository.save(plugin);
+//
+//			plugin = new Plugin();
+//
+//			plugin.setAvailable(false);
+//			plugin.setVersion("");
+//			plugin.setName("Corrupt");
+//
+//			pluginRepository.save(plugin);
+//		};
+//	}
 }
 
 

@@ -1,15 +1,17 @@
 package Coop.coop.Controllers;
 
+import Coop.coop.Entities.Plugin;
 import Coop.coop.Entities.Song;
+import Coop.coop.Services.PluginService;
 import Coop.coop.Services.SongService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import Coop.coop.DTO.PluginDTO;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http:localhost:3000")
 @RestController
@@ -18,10 +20,12 @@ import java.util.Optional;
 public class SongController
 {
     final SongService songService;
+    final PluginService pluginService;
     @Autowired
-    public SongController(SongService songService)
+    public SongController(SongService songService, PluginService pluginService)
     {
         this.songService = songService;
+        this.pluginService = pluginService;
     }
 
     @PostMapping()
@@ -29,7 +33,14 @@ public class SongController
     {
         try
         {
-            this.songService.addSong(song);
+            var plugins = pluginService.createListForSong(song.getPlugins());
+
+            song.setPlugins(plugins);
+
+            var savedSong = this.songService.addSong(song);
+
+            pluginService.AddPluginsForSong(plugins, savedSong);
+
             return new ResponseEntity<>("Song created: " + song.getTrackName(), HttpStatus.CREATED);
 
         }
@@ -82,7 +93,14 @@ public class SongController
 
     @GetMapping("/")
     public ResponseEntity<List<Song>> getAllSongs(){
-        var songs = songService.getAllSongs();
-        return null;
+        try
+        {
+            return songService.getAllSongs();
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

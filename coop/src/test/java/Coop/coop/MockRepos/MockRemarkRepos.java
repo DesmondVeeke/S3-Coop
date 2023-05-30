@@ -116,9 +116,11 @@ public class MockRemarkRepos implements RemarkRepository, RemarkRepositoryCustom
     }
 
     @Override
-    public <S extends Remark> S save(S entity) {
-        remarkList.add(entity);
-        return null;
+    public <S extends Remark> S save(S remark) {
+        long newId = generateNewId();
+        remark.setId(newId);
+        remarkList.add(remark);
+        return remark;
     }
 
     @Override
@@ -195,15 +197,19 @@ public class MockRemarkRepos implements RemarkRepository, RemarkRepositoryCustom
     }
 
     @Override
-    public List<Remark> findAllBySongID(Long songID) {
-        List<Remark> remarks = new ArrayList<>();
-
-        for(int i = 0; i < remarkList.size(); i++){
-            if(songID == remarkList.get(i).getSongID()){
-                remarks.add(remarkList.get(i));
+    public Optional<List<Remark>> findAllBySong_Id(long songid) {
+        List<Remark> filteredRemarks = new ArrayList<>();
+        for (Remark remark : remarkList) {
+            if (remark.getSong().getId() == songid) {
+                filteredRemarks.add(remark);
             }
         }
-
-    return remarks;
+        return Optional.of(filteredRemarks);
     }
+
+    private long generateNewId() {
+        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package Coop.coop.Services;
 
+import Coop.coop.Entities.Plugin;
 import Coop.coop.Entities.Song;
 import Coop.coop.Interfaces.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,12 @@ public class SongService {
     public SongService(SongRepository songRepository) {
         this.songRepository = songRepository;
     }
-    public ResponseEntity<Song> addSong(Song song)
+    public Song addSong(Song song)
     {
         if (song.getTrackName().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
-        Song savedSong = songRepository.save(song);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedSong);
+        return songRepository.save(song);
     }
 
 
