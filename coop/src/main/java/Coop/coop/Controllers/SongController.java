@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import Coop.coop.DTO.PluginDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +32,21 @@ public class SongController
     {
         try
         {
-            var plugins = pluginService.createListForSong(song.getPlugins());
+            List<Plugin> plugins = new ArrayList<>();
 
-            song.setPlugins(plugins);
+            if(song.getPlugins() != null){
+                plugins = pluginService.createListForSong(song.getPlugins());
+                song.setPlugins(plugins);
+            }
 
             var savedSong = this.songService.addSong(song);
 
-            pluginService.AddPluginsForSong(plugins, savedSong);
+            if(savedSong.getPlugins() != null)
+            {
+                pluginService.AddPluginsForSong(plugins, savedSong);
+
+            }
+
 
             return new ResponseEntity<>("Song created: " + song.getTrackName(), HttpStatus.CREATED);
 
