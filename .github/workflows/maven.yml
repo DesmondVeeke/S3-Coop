@@ -31,5 +31,5 @@ jobs:
         working-directory: coop
         
       - name: Run JMeter tests
-        run: mvn clean verify
+        run: mvn jmeter:configure jmeter:jmeter
         working-directory: coop
