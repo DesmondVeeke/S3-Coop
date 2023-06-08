@@ -29,3 +29,7 @@ jobs:
       - name: Run tests with maven
         run: mvn -B test
         working-directory: coop
+        
+      - name: Run JMeter tests
+        run: mvn jmeter:configure jmeter:jmeter
+        working-directory: coop
