@@ -12,13 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Date;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,33 +30,34 @@ public class SongRestControllerTest {
     private SongRepository songRepository;
 
     @Test
-    public void GetSongAPI() throws Exception{
+    public void GetSongAPI() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                .get("/api/songs/{id}", 1)
-                .accept(MediaType.APPLICATION_JSON))
+                        .get("/api/songs/{id}", 1)
+                        .header("COOP", "TRUE")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.trackName").value("Track number 1"));
+                .andExpect(jsonPath("$.trackName").value("Changed trackname!"));
     }
 
     @Test
-    public void CreateSongAPI() throws Exception{
-
+    public void CreateSongAPI() throws Exception {
         Song testSong = new Song();
         testSong.setTrackName("Integration track");
         testSong.setAuthor("Desmond");
         testSong.setLength(400);
         testSong.setStatus(SongStatus.Mastering);
-        testSong.setDateAdded(new Date(2023-05-05));
+        testSong.setDateAdded(new Date(2023 - 05 - 05));
         testSong.setLastModifiedBy("Desmond");
-        testSong.setDateModified(new Date(2023-05-05));
+        testSong.setDateModified(new Date(2023 - 05 - 05));
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/api/songs")
-                .content(asJsonString(testSong))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .post("/api/songs")
+                        .content(asJsonString(testSong))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("COOP", "TRUE")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
         Song optionalResult = songRepository.findById(5L).orElse(null);
@@ -68,57 +66,28 @@ public class SongRestControllerTest {
         String trackName = optionalResult.getTrackName();
         String authorName = optionalResult.getAuthor();
 
-        //Assert
+        // Assert
         assertEquals(5L, resultID);
         assertEquals(testSong.getAuthor(), authorName);
         assertEquals(testSong.getTrackName(), trackName);
-
     }
-//
-//  Update plugin API is the proper implementation for a test like this. Commented out due to time constraints.
-//
-//    @Test
-//    public void UpdateSongAPI() throws Exception
-//    {
-//        Song testSong = new Song();
-//        testSong.setTrackName("updated name!");
-//        testSong.setAuthor("Desmond");
-//        testSong.setLength(400);
-//        testSong.setStatus(SongStatus.Mastering);
-//        testSong.setDateAdded(new Date(2023-05-05));
-//        testSong.setLastModifiedBy("Desmond");
-//        testSong.setDateModified(new Date(2023-05-05));
-//        testSong.setId(3L);
-//
-//        mvc.perform(MockMvcRequestBuilders
-//                .put("/api/songs/{id}", 1L)
-//                .content(asJsonString(testSong))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//
-//        Song optionalResult = songRepository.findById(3L).orElse(null);
-//
-//        String trackName = optionalResult.getTrackName();
-//
-//        //Assert
-//        assertEquals(testSong.getTrackName(), trackName);
-//
-//    }
 
     @Test
-    public void DeleteSongAPI() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.delete("/api/songs/{id}", 4L))
+    public void DeleteSongAPI() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                        .delete("/api/songs/{id}", 4L)
+                        .header("COOP", "TRUE"))
                 .andExpect(status().isAccepted());
     }
 
     @Test
     public void getAllSongsApi() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/api/songs/"))
+        mvc.perform(MockMvcRequestBuilders
+                        .get("/api/songs/")
+                        .header("COOP", "TRUE"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
-
 
     private static String asJsonString(final Object obj) {
         try {

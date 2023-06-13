@@ -9,27 +9,25 @@ import Coop.coop.MockRepos.MockSongRepos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.lang.reflect.Executable;
 import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Tag("UnitTests")
 class SongServiceTest {
 
+    @Autowired
     private SongService service;
 
     private MockSongRepos repos;
-
-    private MockPluginRepos pluginRepos;
 
     private Song testSong = new Song();
     private List<Song> songList = new ArrayList<>();
@@ -39,7 +37,6 @@ class SongServiceTest {
     @BeforeEach
     void setUp() {
         this.repos = new MockSongRepos();
-        this.service = new SongService(repos);
 
         //Arrange
         testSong.setTrackName("Track number 1");
@@ -137,19 +134,19 @@ class SongServiceTest {
     @Test
     void deleteSong_Pass() {
         //Act
-        boolean result = service.deleteSong(1L);
+        boolean result = service.deleteSong(2L);
 
         //Assert
-        assertEquals(true,result);
+        assertTrue(result);
     }
 
     @Test
     void deleteSong_SongDoesntExist_Fail() {
         //Act
-        boolean result = service.deleteSong(-999L);
+        boolean result = service.deleteSong(0L);
 
         //Assert
-        assertEquals(false,result);
+        assertFalse(result);
     }
 
     @Test

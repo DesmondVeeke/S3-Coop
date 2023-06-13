@@ -13,12 +13,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
-import java.util.Optional;
 
 @SpringBootApplication
 public class CoopApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(CoopApplication.class);
 	public static void main(String[] args) {
 
 		SpringApplication.run(CoopApplication.class, args);
@@ -36,11 +34,13 @@ public class CoopApplication {
 			song.setLastModifiedBy("Desmond");
 			song.setDateModified(new Date(2023-05-05));
 			song.setId(1L);
+			song.setEnvironment(1);
+			song.setAuthorid(1);
 
 			songRepository.save(song);
 
 			song = new Song();
-			song.setTrackName("Track number 2");
+			song.setTrackName("Farma");
 			song.setAuthor("Brian");
 			song.setLength(300);
 			song.setStatus(SongStatus.Mix);
@@ -48,11 +48,13 @@ public class CoopApplication {
 			song.setLastModifiedBy("Brian");
 			song.setDateModified(new Date(2023-05-05));
 			song.setId(2L);
+			song.setEnvironment(1);
+			song.setAuthorid(2);
 
 			songRepository.save(song);
 
 			song = new Song();
-			song.setTrackName("Track number 3");
+			song.setTrackName("Dog's song");
 			song.setAuthor("Big Dog");
 			song.setLength(150);
 			song.setStatus(SongStatus.Production);
@@ -60,6 +62,8 @@ public class CoopApplication {
 			song.setLastModifiedBy("Big dog");
 			song.setDateModified(new Date(2023-05-05));
 			song.setId(3L);
+			song.setEnvironment(1);
+			song.setAuthorid(1);
 
 			songRepository.save(song);
 
@@ -72,6 +76,8 @@ public class CoopApplication {
 			song.setLastModifiedBy("Big Bri");
 			song.setDateModified(new Date(2023-05-05));
 			song.setId(4L);
+			song.setEnvironment(2);
+			song.setAuthorid(4);
 
 			songRepository.save(song);
 
@@ -111,44 +117,6 @@ public class CoopApplication {
 		};
 	}
 
-//	@Bean
-//	public CommandLineRunner addPlugin(PluginRepository pluginRepository){
-//		return (args) -> {
-//			Plugin plugin = new Plugin();
-//
-//			plugin.setAvailable(true);
-//			plugin.setVersion("1.0");
-//			plugin.setName("Omnisphere");
-//			plugin.setSong();
-//
-//			pluginRepository.save(plugin);
-//
-//			plugin = new Plugin();
-//
-//			plugin.setAvailable(true);
-//			plugin.setVersion("5.3");
-//			plugin.setName("Soundtoys");
-//			plugin.setId(2L);
-//
-//			pluginRepository.save(plugin);
-//
-//			plugin = new Plugin();
-//
-//			plugin.setAvailable(true);
-//			plugin.setVersion("X.X");
-//			plugin.setName("Ozone");
-//
-//			pluginRepository.save(plugin);
-//
-//			plugin = new Plugin();
-//
-//			plugin.setAvailable(false);
-//			plugin.setVersion("");
-//			plugin.setName("Corrupt");
-//
-//			pluginRepository.save(plugin);
-//		};
-//	}
 }
 
 

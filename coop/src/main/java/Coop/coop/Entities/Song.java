@@ -19,6 +19,9 @@ public class Song {
     private long id;
     private String trackName;
     private String author;
+
+    private long environment;
+    private long authorid;
     private long length;
     private Date dateAdded;
     private Date dateModified;

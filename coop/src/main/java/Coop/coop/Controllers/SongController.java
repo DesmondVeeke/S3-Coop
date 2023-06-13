@@ -1,5 +1,6 @@
 package Coop.coop.Controllers;
 
+import Coop.coop.DTO.MessageDTO;
 import Coop.coop.Entities.Plugin;
 import Coop.coop.Entities.Song;
 import Coop.coop.Services.PluginService;
@@ -7,12 +8,13 @@ import Coop.coop.Services.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http:localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/songs")
 
@@ -20,11 +22,14 @@ public class SongController
 {
     final SongService songService;
     final PluginService pluginService;
+
+    final SimpMessagingTemplate simpTemplate;
     @Autowired
-    public SongController(SongService songService, PluginService pluginService)
+    public SongController(SongService songService, PluginService pluginService, SimpMessagingTemplate simpTemplate)
     {
         this.songService = songService;
         this.pluginService = pluginService;
+        this.simpTemplate = simpTemplate;
     }
 
     @PostMapping()
@@ -47,6 +52,9 @@ public class SongController
 
             }
 
+            MessageDTO message = new MessageDTO();
+            message.setText("New song was added.");
+            simpTemplate.convertAndSend("/topic/message", message);
 
             return new ResponseEntity<>("Song created: " + song.getTrackName(), HttpStatus.CREATED);
 
@@ -109,5 +117,23 @@ public class SongController
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @PostMapping("/batch")
+    public ResponseEntity<List<Song>> getSongsByIds(@RequestBody List<Long> songIds) {
+        List<Song> songs = songService.getSongsByID(songIds);
+        if (songs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(songs);
+    }
+
+    @GetMapping("/environment/{environmentID}")
+    public ResponseEntity<List<Song>> getSongsByEnvironment(@PathVariable long environmentID) {
+        List<Song> songs = songService.getByEnvironment(environmentID);
+        if (songs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(songs);
     }
 }
