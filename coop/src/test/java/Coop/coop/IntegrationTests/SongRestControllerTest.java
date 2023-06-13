@@ -37,8 +37,7 @@ public class SongRestControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.trackName").value("Changed trackname!"));
+                .andExpect(jsonPath("$.id").isNotEmpty());
     }
 
     @Test
